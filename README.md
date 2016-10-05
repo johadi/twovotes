@@ -2,7 +2,7 @@
 To use this project effectively one has to create this two folders in the root directory(Voting)
 These folders should be named uploads and resized_pictures.
 
-Also use npm to install all this modules as shown below which will make your node_modules dependencies to look like below
+Also use npm to install all this modules as shown below. This will make your node_modules dependencies to look like this:
 
   "dependencies": {
     "async": "^2.0.1",
