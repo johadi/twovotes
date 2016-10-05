@@ -1,0 +1,11 @@
+/node_modules
+/body-parser
+/resized_pictures
+/uploads
+
+bundle.js
+npm-debug.log
+
+# IntelliJ
+*.iml
+/.idea

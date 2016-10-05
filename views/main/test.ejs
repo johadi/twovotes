@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from getbootstrap.com/examples/jumbotron/ by HTTrack Website Copier/3.x [XR&CO'2013], Wed, 02 Oct 2013 12:14:30 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-theme.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <link href="/css/styles/index.css" rel="stylesheet">
+
+    <script src="/jsfiles/jquery-2.1.1.js"></script>
+    <script src="/jsfiles/bootstrap.js"></script>
+
+    <script>
+
+        function postItem() {
+            var data={ image: "weldone",like: "Like",unlike: "Unlike" };
+            var nm=$("#nm").val();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://localhost:4000/check",
+                data: JSON.stringify(data) ,//converts the string to json data and sends to server
+                contentType: "application/json", //use req.body to get your data.if you don't use this, you will have to get your data using req.params
+                success: function(data) {
+                    var d=data;
+                    //show content
+                    var p=$("#like").html();
+                   if(p=="Like"){
+                       alert(d.image+" "+ d.unlike+nm);
+                        $("#like").html("Unlike");
+                    }
+                    if(p=="Unlike"){
+                        alert(d.image+" "+d.like+nm);
+                        $("#like").html("Like");
+                    }
+                    //$("#like").html("hello "+data);
+                    //$("#like").html("Unlike");
+
+
+                },
+                error: function(jqXHR, textStatus, err) {
+                    //show error message
+                    alert('text status '+textStatus+', err '+err);
+                }
+            });
+        }
+
+        $(document).ready(function(){
+            $("#like").click(function(){
+                postItem();
+                return false;
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+<p>Welcome to Like</p>
+<a href="" id="like">Like</a>
+<input type="hidden" id="nm" value="<%=name%>">
+
+
+</body>
+
+<!-- Mirrored from getbootstrap.com/examples/jumbotron/ by HTTrack Website Copier/3.x [XR&CO'2013], Wed, 02 Oct 2013 12:14:30 GMT -->
+</html>
