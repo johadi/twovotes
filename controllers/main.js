@@ -24,7 +24,7 @@ module.exports={
                       function(callback){
                           fs.mkdir("resized_pictures/"+req.body.username,function(err){
                               if(err) return next(err);
-                              var success1=1;
+                            const success1=1;
                               callback(null,success1);
                           });
                       },
@@ -32,7 +32,7 @@ module.exports={
                           if(success1==1){
                               fs.mkdir("resized_pictures/"+req.body.username+"/picture1",function(err){
                                   if(err) return next(err);
-                                  var success2=2;
+                                const success2=2;
                                   callback(null,success2);
                               });
                           }else{
@@ -43,7 +43,7 @@ module.exports={
                           if(success2==2){
                               fs.mkdir("resized_pictures/"+req.body.username+"/picture2",function(err){
                                   if(err) return next(err);
-                                  var success3=3;
+                                const success3=3;
                                   callback(null,success3);
                               });
                           }else{
@@ -54,7 +54,7 @@ module.exports={
                           if(success3==3){
                               fs.mkdir("uploads/"+req.body.username,function(err){
                                   if(err) return next(err);
-                                  var success4=4;
+                                const success4=4;
                                   callback(null,success4);
                               });
                           }else{
@@ -65,7 +65,7 @@ module.exports={
                           if(success4==4){
                               fs.mkdir("uploads/"+req.body.username+"/picture1",function(err){
                                   if(err) return next(err);
-                                  var success5=5;
+                                const success5=5;
                                   callback(null,success5);
                               });
                           }else{
@@ -117,12 +117,12 @@ module.exports={
     },
     //use to test JQuery Files
     checkingPost: function(req,res){
-       // var data = JSON.stringify(req.body.image);
-        var clientData={
+      const clientData={
             like: req.body.like,
             unlike: req.body.unlike,
             image: req.body.image
-        }
+        };
+
         res.json(clientData);
     },
     checkingGet: function(req,res){
@@ -130,7 +130,7 @@ module.exports={
             function(callback){
                 fs.mkdir("resized_pictures/pic2",function(err){
                     if(err) throw err;
-                    var success=1
+                  const success=1
                     callback(null,success);
                 });
             },
@@ -138,7 +138,7 @@ module.exports={
                 if(success==1){
                     fs.mkdir("resized_pictures/pic2/pic1",function(err){
                         if(err) throw err;
-                        var success2=1
+                      const success2=1
                         callback(null,success2);
                     });
                 }else{

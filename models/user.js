@@ -1,9 +1,9 @@
-var mongoose=require("mongoose");
-var Schema=mongoose.Schema;
-var bcrypt=require("bcrypt-nodejs");
-var crypto=require("crypto");
+const mongoose=require("mongoose");
+const Schema=mongoose.Schema;
+const bcrypt=require("bcrypt-nodejs");
+const crypto=require("crypto");
 
-var userSchema=new Schema({
+const userSchema=new Schema({
     username: {type: String,unique:true,lowercase:true,required: true},
     name: {
         fname: String,
@@ -17,7 +17,7 @@ var userSchema=new Schema({
 });
 
 userSchema.pre("save",function(next){
-    var user=this;
+    const user=this;
     if(!user.isModified("password")) return next();//go to next operation if password is not given a value
     bcrypt.genSalt(10,function(err,salt){
         if(err) return next(err);

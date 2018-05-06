@@ -1,7 +1,7 @@
-var User=require("../models/user");
-var Post=require("../models/post");
-var Count=require("../models/postCount");
-var async=require("async");
+const User=require("../models/user");
+const Post=require("../models/post");
+const Count=require("../models/postCount");
+const async=require("async");
 
 
 module.exports={
@@ -17,7 +17,7 @@ module.exports={
         pic1_path=postId+"."+ext1;
         pic2_path=postId+"."+ext2;
 
-        var post=new Post();
+      const post=new Post();
         post.title=title;
         post.poster=posterId;
         post.postId=postId;
@@ -45,7 +45,7 @@ module.exports={
         });
     },
     checkPost: function(postId,poster,cb){
-        Post.findOne({postId:postId,poster:poster},function(err,rs){
+        Post.findOne({postId,poster},function(err,rs){
             if(err) throw err;
             if(!rs) return cb(false);
             cb(true);
@@ -70,11 +70,11 @@ module.exports={
         });
     },
     renamePictures: function(fs,oldPostId,newPostId,ext1,ext2,cb){
-        var patho1="resized_pictures/picture1/"+oldPostId+"."+ext1;
-        var newPatho1="resized_pictures/picture1/"+newPostId+"."+ext2;
+      const patho1="resized_pictures/picture1/"+oldPostId+"."+ext1;
+      const newPatho1="resized_pictures/picture1/"+newPostId+"."+ext2;
 
-        var patho2="resized_pictures/picture2/"+oldPostId+"."+ext1;
-        var newPatho2="resized_pictures/picture2/"+newPostId+"."+ext2;
+      const patho2="resized_pictures/picture2/"+oldPostId+"."+ext1;
+      const newPatho2="resized_pictures/picture2/"+newPostId+"."+ext2;
 
         fs.rename(patho1, newPatho1, function(err) {
             if ( err ) throw err;
@@ -87,7 +87,13 @@ module.exports={
     getPostCount: function(cb){
         Count.findOne({counter: "post"},function(err,rs){
             if(err) throw err;
-            count = rs.count+1;
+            if(!rs) {
+                const newCount = new Count();
+                newCount.save();
+                const count = newCount.count + 1;
+                return cb(count);
+            }
+            const count = rs.count+1;
             cb(count);
         });
     }

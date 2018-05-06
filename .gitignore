@@ -1,11 +1,12 @@
 /node_modules
 /body-parser
-/resized_pictures
-/uploads
-
 bundle.js
 npm-debug.log
-
 # IntelliJ
 *.iml
 /.idea
+.DS_Store
+uploads/*
+!uploads/.gitkeep
+resized_pictures/*
+!resized_pictures/.gitkeep

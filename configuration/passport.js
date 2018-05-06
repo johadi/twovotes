@@ -1,6 +1,6 @@
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User=require("../models/user");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User=require("../models/user");
 
 //stores user ID in the session to be used by deserializeUser
 passport.serializeUser(function(user, done) {

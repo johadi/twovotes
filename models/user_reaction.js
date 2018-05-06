@@ -1,7 +1,7 @@
-var mongoose=require("mongoose");
-var Schema=mongoose.Schema;
+const mongoose=require("mongoose");
+const Schema=mongoose.Schema;
 
-var reactionSchema=new Schema({
+const reactionSchema=new Schema({
     poster: {type : Schema.Types.ObjectId, ref: "User"},
     voter: {type : Schema.Types.ObjectId, ref: "User"},
     post: {type : Schema.Types.ObjectId, ref: "Post"},

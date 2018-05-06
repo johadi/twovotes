@@ -1,7 +1,7 @@
-var mongoose=require("mongoose");
-var Schema=mongoose.Schema;
+const mongoose=require("mongoose");
+const Schema=mongoose.Schema;
 
-var postCountSchema=new Schema({
+const postCountSchema=new Schema({
     counter: {type: String,default: "post"},
     count: {type: Number, default: 1000}
 });
