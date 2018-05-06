@@ -1,26 +1,26 @@
-var express = require('express');
-var app = express();
-var path=require("path");
+const express = require('express');
+const app = express();
+const path=require("path");
 
-var mongoose=require("mongoose");
-var logger = require('morgan');
-//var User=require("./user");
-var bodyParser = require('body-parser');
+const mongoose=require("mongoose");
+const logger = require('morgan');
+//const User=require("./user");
+const bodyParser = require('body-parser');
 
-var cookieParser=require("cookie-parser");
-var session=require("express-session");
-var MongoStore=require("connect-mongo")(session);
-var passport=require("passport");
-var flash=require("express-flash");
+const cookieParser=require("cookie-parser");
+const session=require("express-session");
+const MongoStore=require("connect-mongo")(session);
+const passport=require("passport");
+const flash=require("express-flash");
 
 
-var urlencodedParser = bodyParser.urlencoded({ extended: true });
-var jsonParser=bodyParser.json();
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
+const jsonParser=bodyParser.json();
 
-var ejs=require("ejs");
-var ejsmate=require("ejs-mate");
+const ejs=require("ejs");
+const ejsmate=require("ejs-mate");
 
-var routes=require("./routes/index");
+const routes=require("./routes/index");
 
 app.engine("ejs",ejsmate);
 app.set("view engine","ejs");
@@ -29,8 +29,8 @@ app.use(urlencodedParser);
 app.use(jsonParser);
 //connect to the database
 mongoose.connect("mongodb://127.0.0.1/voting",function(err){
-    if(err){console.log(err);}
-    else{console.log("database connected");}
+    if(err){console.error(err);}
+    else{console.info("database connected");}
 });
 
 app.use(cookieParser());
@@ -56,9 +56,9 @@ app.use(logger("dev"));
 app.use(routes);
 
 app.listen(4000,function(err){
-    if(err)console.log(err);
-    else console.log("listening to port 4000");
-})
+    if(err)console.error(err);
+    else console.info("listening to port 4000");
+});
 
 
 

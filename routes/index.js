@@ -1,11 +1,11 @@
 //files where main routers are defined
-var express=require("express");
-var router=express.Router();
-var passport=require("passport");
-var configPassport=require("../configuration/passport");
+const express=require("express");
+const router=express.Router();
+const passport=require("passport");
+const configPassport=require("../configuration/passport");
 
-var mainCtrl=require("../controllers/main");
-var userCtrl=require("../controllers/user");
+const mainCtrl=require("../controllers/main");
+const userCtrl=require("../controllers/user");
 
 //main routes
 router.get("/",mainCtrl.indexPage);

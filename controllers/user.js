@@ -62,7 +62,7 @@ const upload = multer({
 const upload2 = multer({
   storage: storage2,
   fileFilter: function (req, file, cb) {
-    var ext = file.originalname.split(".").pop();
+    const ext = file.originalname.split(".").pop();
 
     if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'jpeg' || ext.toLowerCase() == 'png') {
       req.flash("message", "File uploaded successfully");
@@ -83,7 +83,7 @@ const upload2 = multer({
 const uploadImg = multer({
   storage: storageImg,
   fileFilter: function (req, file, cb) {
-    var ext = file.originalname.split(".").pop();
+    const ext = file.originalname.split(".").pop();
 
     if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'jpeg' || ext.toLowerCase() == 'png') {
       req.flash("error", 1);
