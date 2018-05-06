@@ -7,12 +7,13 @@ function likeProcess(
   like2Selector,
   vote1Selector,
   vote2Selector) {
-  const data = {posterId: posterId, postId: postId, userId: userId, likeType: likeType}
+  const data = {posterId, postId, userId, likeType};
+  const serverUrl = 'http://localhost:4000';
 
   $.ajax({
     type: "POST",
     dataType: "json",
-    url: "http://localhost:4000/user/like",
+    url: `${serverUrl}/user/like`,
     data: JSON.stringify(data),//converts the string to json data and sends to server
     //use req.body to get your data on server side.if you don't use this, you will have to get your data using req.params
     contentType: "application/json",
@@ -37,7 +38,7 @@ function likeProcess(
     },
     error: function (jqXHR, textStatus, err) {
       //show error message
-      alert('text status ' + textStatus + ', err ' + err);
+      alert('text status: ' + textStatus + ', err: ' + err);
     }
   });
 }
@@ -68,7 +69,6 @@ $(document).ready(function () {
 
   $(".like2").click(function () {
     //likeProcess();
-    //alert($(".hdlike1").val());
     const likeRel = $(this).attr("rel");//we use this to name our ID fields for poster and post ids
 
     //get Selector for poster Id and post Id
