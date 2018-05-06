@@ -120,6 +120,13 @@ module.exports = {
     if (req.user) return res.redirect("/user/home");
     res.render("main/login", {title: "Login Page", message: req.flash("loginMessage")});
   },
+  loginPost: function (req, res, next) {
+    if(!req.body.username || !req.body.password) {
+      req.flash("loginMessage", "All fields are required");
+      return res.redirect('/login');
+    }
+    next();
+  },
   //use to test JQuery Files
   checkingPost: function (req, res) {
     const clientData = {

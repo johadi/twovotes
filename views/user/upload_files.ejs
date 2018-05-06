@@ -25,16 +25,8 @@
         <div class="col-lg-5" style="padding-right: 70px;">
             <div class="col-lg-12" style="border:#737373 groove 5px;padding-left: 50px; padding-top: 30px">
 
-                <% if(message.length>0) {%>
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times</span>
-                    </button>
-                    <%=message%>
-                </div>
-                <%}%>
-
-
+                <%include ../partials/error.ejs%>
+                <%include ../partials/success.ejs%>
                 <form class="form-horizontal" action="/upload" role="form" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="file" id="exampleInputFile" name="display">

@@ -1,58 +1,15 @@
 <%- layout("template1")%>
-<div class="row">
-    <h2><%=user.name.fname%> <%=user.name.lname%></h2>
-    <div class="col-xs-12 col-sm-12">
-        <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3">
-            <div class="col-xs-5 col-sm-4" >
-                <img src="/uploads/default.jpg" class="img-responsive">
-            </div>
-            <div class="col-xs-7 col-sm-8">
-                <p style="margin:0px;font-size:12px"><%=user.username%></p>
-                <p style="margin:0px;font-size:12px"><a href="/user/profile">View Profile </a>| <a href="/logout">Logout</a></p>
-                <p style="margin:0px;font-size:12px"><a href="/user/update-profile">Edit Profile</a></p>
-            </div>
-        </div>
-
-        <div class="col-xs-10 col-sm-10 col-md-9 col-lg-9">
-            <form role="form" name="mailform" class="form-horizontal" action="Search_Mail_Result.php" enctype="multipart/form-data" method="POST">
-                <div class="form-group">
-                    <label for="inputEmail" class="control-label col-xs-3">Enter Description</label>
-                    <div class="col-xs-7">
-                        <input type="text" required class="form-control" id="inputEmail" name="searchmail" placeholder="Enter Your Description to Search">
-                    </div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-
-                        <button type="submit" name="submitsearch" class="btn btn-success">Search Mail</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<% include profile_header.ejs %>
 
 <div class="row container-hd">
-    <div  class="col-lg-4 leftnavy">
-        <div class="nav-head"><h4>Quick Access</h4></div>
-        <div class="list-group show" style="margin-bottom:50px;line-height:5px; display: list-item">
-            <a href="/user/post" class="list-group-item">New Post</a>
-            <a href="#" class="list-group-item">My Posts</a>
-            <a href="#" class="list-group-item">Saved posts</a>
-        </div>
-
-    </div>
-    <div class="col-lg-4" style="border: inset 5px darkgray">
+    <% include side_menu.ejs %>
+    <div class="col-lg-5 col-lg-offset-2 img-frame">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-10 col-lg-offset-1">
                 <table class="table table-bordered">
-                    <caption>Upload First Picture</caption>
-                    <% if(message.length>0) {%>
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times</span>
-                        </button>
-                        <%=message%>
-                    </div>
-                    <%}%>
+                    <caption>First Picture</caption>
+                    <%include ../partials/error.ejs%>
+                    <%include ../partials/success.ejs%>
                     <form method="post" action="/user/post" enctype="multipart/form-data">
                         <tr>
                             <td align="center">
@@ -73,7 +30,7 @@
                         <tr>
                             <td colspan="2">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block" name="vote1" value="vote2">
-                                    Upload
+                                    Upload First Picture
                                 </button>
                             </td>
                         </tr>
@@ -81,9 +38,6 @@
                 </table>
             </div>
         </div>
-
-    </div>
-    <div class="col-lg-4">
 
     </div>
 </div>

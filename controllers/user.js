@@ -43,7 +43,7 @@ const upload = multer({
     const ext = file.originalname.split(".").pop();
 
     if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'jpeg' || ext.toLowerCase() == 'png') {
-      req.flash("message", "File uploaded successfully");
+      req.flash("success_msg", "First Picture uploaded successfully");
       req.session.postId = req.body.postId;
       req.session.ext1 = ext.toLowerCase();
       req.session.path1 = "/" + req.user.username + "/picture1/" + req.body.postId + "." + ext.toLowerCase();
@@ -65,7 +65,7 @@ const upload2 = multer({
     const ext = file.originalname.split(".").pop();
 
     if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'jpeg' || ext.toLowerCase() == 'png') {
-      req.flash("message", "File uploaded successfully");
+      req.flash("success_msg", "Second Picture uploaded successfully");
       req.session.ext2 = ext.toLowerCase();
       req.session.postId = req.body.postId;
       req.session.path2 = "/" + req.user.username + "/picture2/" + req.body.postId + "." + ext.toLowerCase();
@@ -90,7 +90,6 @@ const uploadImg = multer({
       req.session.postId = req.body.postId;
       req.session.imgExt = ext.toLowerCase();
       //req.session.path1="/"+req.user.username+"/picture1/"+req.body.postId+"."+ext.toLowerCase();
-      console.log(file);
       return cb(null, true);
     }
     else {
@@ -107,8 +106,8 @@ const uploadImg = multer({
 module.exports = {
   userPageGet: function (req, res) {
     Post.find({})
+      .sort({ date: -1})
       .populate("poster")
-      .sort({date: -1})
       .exec(function (err, rs) {
         if (err) throw err;
         res.render("user/home", {posts: rs});
@@ -141,7 +140,8 @@ module.exports = {
             path1,
             path2,
             msg: req.user.username,
-            message: req.flash("message")
+            message: req.flash("message"),
+            success_msg: req.flash("success_msg")
           });
         } else if (req.session && req.session.path1) {
           const path2 = "/uploads/default.jpg";
@@ -151,7 +151,8 @@ module.exports = {
             count,
             path1,
             path2,
-            message: req.flash("message")
+            message: req.flash("message"),
+            success_msg: req.flash("success_msg")
           });
         }
         else {
@@ -162,7 +163,8 @@ module.exports = {
             count,
             path1,
             path2,
-            message: req.flash("message")
+            message: req.flash("message"),
+            success_msg: req.flash("success_msg")
           });
 
         }
@@ -199,6 +201,7 @@ module.exports = {
         path1,
         path2,
         count,
+        success_msg: req.flash("success_msg"),
         message: req.flash("message")
       });
     } else {
@@ -209,7 +212,8 @@ module.exports = {
         path1,
         path2,
         count,
-        message: req.flash("message")
+        message: req.flash("message"),
+        success_msg: req.flash("success_msg")
       });
     }
 
@@ -237,6 +241,7 @@ module.exports = {
     if (req.session && req.session.path1 && req.session.path2 && req.session.postId) {
       res.render("user/post_page_all", {
         message: req.flash("message"),
+        success_msg: req.flash("success_msg"),
         ext1: req.session.ext1,
         ext2: req.session.ext2,
         postId: req.session.postId,
@@ -293,23 +298,23 @@ module.exports = {
         }
       ]);
     } else {
-      req.flash("message", "Something is wrong,Check Your Post title")
+      req.flash("message", "Something\'s wrong, check Your Post title")
       res.redirect("/user/post-all");
     }
   },
   userProfile: function (req, res) {
     if (req.user) {
-      res.render("user/profile");
-    } else {
-      res.json("error! page not found");
+      return res.render("user/profile");
     }
+
+    res.json("error! page not found");
   },
   userUpdate: function (req, res) {
     if (req.user) {
-      res.render("user/update_profile", {message: req.flash("imgMsg")});
-    } else {
-      res.json("error! page not found");
+      return res.render("user/update_profile", {success_msg: req.flash("success"), message: req.flash("imgMsg")});
     }
+
+    res.json("error! page not found");
   },
   userUpload: function (req, res) {
     uploadImg(req, res, function (err) {
@@ -717,9 +722,6 @@ module.exports = {
         });
       }// end of else of if(likeType)
     }// end of if (poster,post,likeType)
-
-    //res.json();
-    //res.json(clientData);
   },
   userLogout: function (req, res) {
     req.session.destroy();

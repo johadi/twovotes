@@ -14,7 +14,7 @@ router.get("/signup",mainCtrl.signupPage);
 router.post("/signup",mainCtrl.singupPost);
 
 router.get("/login",mainCtrl.loginPage);
-router.post("/login",
+router.post("/login", mainCtrl.loginPost,
     passport.authenticate('local-login', {
         successRedirect: '/user/home',
         failureRedirect: '/login',
