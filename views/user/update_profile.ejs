@@ -14,8 +14,6 @@
                 <div class="col-lg-12 update-profile-content-wrapper">
                     <div class="row">
                         <div class="col-lg-4 update-picture-wrapper">
-                            <% include ../partials/error.ejs %>
-                            <% include ../partials/success.ejs %>
                             <form id="imageform" method="post" enctype="multipart/form-data" action='/user/upload'>
                                 <div class="row" style="margin-bottom:10%" id="preview">
                                     <img src="/uploads/default.jpg" class="img-responsive">
@@ -28,44 +26,45 @@
                             </form>
                         </div>
                         <div class="col-lg-7 update-profile-form-wrapper">
-                            <form role="form" class="form-horizontal" action="" enctype="multipart/form-data"
-                                  method="POST" name="step2">
+                            <% include ../partials/error.ejs %>
+                            <% include ../partials/success.ejs %>
+                            <form role="form" class="form-horizontal" method="POST" name="update">
                                 <table class="table table-condensed" style="background-color:#FFFFFF;">
                                     <tbody>
                                     <tr>
                                         <td style="width:45%">
-                                            <input style="width:100%" type="text" value="<%= user.name.lname %>" name="new_name_first"/>
+                                            <input style="width:100%" type="text" value="<%= user.name.lname %>" name="lname"/>
                                         </td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td style="width:45%">
-                                            <input style="width:100%" type="text" value="<%= user.name.fname %>" name="new_name_first"/>
+                                            <input style="width:100%" type="text" value="<%= user.name.fname %>" name="fname"/>
                                         </td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td style="width:45%">
-                                            <input style="width:100%" type="text" disabled value="<%= user.username %>" name="new_name_first"/>
+                                            <input style="width:100%" type="text" disabled value="<%= user.username %>" name="username"/>
                                         </td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td style="width:45%">
-                                            <input style="width:100%" type="text" value="<%= user.email %>" name="new_name_first"/>
+                                            <input style="width:100%" type="text" value="<%= user.email %>" name="email"/>
                                         </td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td style="width:45%">
-                                            <input style="width:100%" type="text" value="<%= user.phone %>" name="new_name_first"/>
+                                            <input style="width:100%" type="text" value="<%= user.phone %>" name="phone"/>
                                         </td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td style="width:60%">
                                             <select style="width:60%" type="text"
-                                                    name="new_gender">
+                                                    name="sex">
                                                 <option value="<%= user.sex === 'male'? 'male' : 'female'%>">
                                                     <%= user.sex == 'male'? 'Male' : 'Female'%>
                                                 </option>

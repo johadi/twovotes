@@ -4,10 +4,18 @@ const async = require("async");
 
 module.exports = {
   indexPage: function (req, res) {
-    res.redirect("/login");
+    if (req.user) return res.redirect("/user/home");
+    res.render("main/index", {
+      title: "Login Page",
+      message: req.flash("loginMessage"),
+      signup_success: req.flash("signup_success")
+    });
   },
   signupPage: function (req, res) {
-    res.render("main/signup", {message: req.flash("msg1")});
+    res.render("main/signup", {
+      message: req.flash("msg1"),
+      signup_success: req.flash("signup_success")
+    });
   },
   singupPost: function (req, res, next) {
     if (
@@ -100,7 +108,8 @@ module.exports = {
                     req.flash("msg1", "No user was created");
                     res.redirect("/signup");
                   }
-                  res.redirect("/login");
+                  req.flash("signup_success", "Sign up successful. Login to your account here.");
+                  res.redirect("/");
                 });
               });
             } else {
@@ -116,14 +125,10 @@ module.exports = {
     }
 
   },
-  loginPage: function (req, res) {
-    if (req.user) return res.redirect("/user/home");
-    res.render("main/login", {title: "Login Page", message: req.flash("loginMessage")});
-  },
   loginPost: function (req, res, next) {
     if(!req.body.username || !req.body.password) {
       req.flash("loginMessage", "All fields are required");
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     next();
   },

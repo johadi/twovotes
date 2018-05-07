@@ -104,24 +104,23 @@ const uploadImg = multer({
 }).single("photoimg");
 
 module.exports = {
-  userPageGet: function (req, res) {
+  userHomePage: function (req, res) {
     Post.find({})
-      .sort({ date: -1})
+      .sort({date: -1})
       .populate("poster")
       .exec(function (err, rs) {
         if (err) throw err;
         res.render("user/home", {posts: rs});
       });
   },
-
-  userPagePost: function (req, res) {//shows all posts from which user can vote
-    if (req.body.vote1) {
-      res.json("Am from Vote 1");
-    } else if (req.body.vote2) {
-      res.json("Am from vote 2");
-    } else {
-      res.json("You have not voted");
-    }
+  userPostsPage: function (req, res) {
+    Post.find({ poster: req.user._id })
+      .sort({date: -1})
+      .populate("poster")
+      .exec(function (err, rs) {
+        if (err) throw err;
+        res.render("user/user_posts_page", {posts: rs});
+      });
   },
 
   userPost1Get: function (req, res) {
@@ -309,12 +308,35 @@ module.exports = {
 
     res.json("error! page not found");
   },
-  userUpdate: function (req, res) {
+  updateUserGet: function (req, res) {
     if (req.user) {
-      return res.render("user/update_profile", {success_msg: req.flash("success"), message: req.flash("imgMsg")});
+      return res.render("user/update_profile",
+        {
+          success_msg: req.flash("success_msg"),
+          message: req.flash("message"),
+          imgMsg: req.flash("imgMsg"),
+        });
     }
 
     res.json("error! page not found");
+  },
+  updateUserPost: function (req, res) {
+    if (!req.body.email || !req.body.sex || !req.body.phone || !req.body.lname || !req.body.fname) {
+      req.flash('message', 'All fields are required');
+      return res.redirect('/user/update-profile');
+    }
+    const body = req.body;
+    body.name = {
+      fname: body.fname,
+      lname: body.lname
+    };
+
+    User.findOneAndUpdate({username: req.user.username}, {$set: body}, {returnNewDocument: true})
+      .then(() => {
+        req.flash('success_msg', 'Profile updated successfully');
+        res.redirect('/user/update-profile')
+      })
+      .catch(err => res.json({err}));
   },
   userUpload: function (req, res) {
     uploadImg(req, res, function (err) {

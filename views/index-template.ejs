@@ -20,6 +20,16 @@
 <body>
 <div class="row login-wrapper">
     <div class="nav-link"><span class="nav-link-text">TwoVotes</span></div>
+
+    <% if(signup_success.length > 0) {%>
+    <div class="alert alert-success alert-dismissible signup-alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times</span>
+        </button>
+        <%=signup_success%>
+    </div>
+    <%}%>
+
     <div class="login-container">
         <%- body %>
     </div>

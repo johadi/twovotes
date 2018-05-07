@@ -1,0 +1,79 @@
+<%- layout("template1") %>
+<% include profile_header.ejs %>
+<div class="row container-hd">
+    <% include side_menu.ejs %>
+    <div class="col-lg-6 col-lg-offset-1">
+        <% for(var i = 0;i < posts.length;i++){ %>
+        <div class="row" id="pos">
+            <%
+                var date = new Date(posts[i].date);
+                var like11 = "Like";
+                var like22 = "Like";
+
+                //this is to get the like status of this user for the current post
+                for (var j = 0; j < posts[i].reactions.length; j++) {
+                    if (user._id.equals(posts[i].reactions[j].voter)) {
+
+                        like11 = posts[i].reactions[j].like1Status;
+                        like22 = posts[i].reactions[j].like2Status;
+                        break;
+                    }
+                }
+            %>
+            <div class="media col-lg-12"
+                 style="border-bottom: solid lightgrey 2px; margin-top: 5px; padding-bottom: 15px">
+                <a class="pull-left" href="#">
+                    <img class="media-object img-circle" style="height: 50px; width:50px;" src="/default2.jpg" alt="...">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading"><b><%= posts[i].poster.name.fname %> <%= posts[i].poster.name.lname %></b>
+                        <small>
+                            @<%= posts[i].poster.username %>
+                        </small>
+                    </h4>
+                    <span style="color: dimgrey"><%= date.toDateString() %> at <%= date.toLocaleTimeString() %></span>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <h4 align="center"><%= posts[i].title %></h4>
+                <div class="col-lg-6" style="padding: 0 0 0 0">
+                    <img src="/<%= posts[i].poster.username %>/picture1/<%= posts[i].picture.pic1.location %>"
+                         class="img-responsive"/>
+                </div>
+                <div class="col-lg-6" style="padding: 0 0 0 0">
+                    <img src="/<%= posts[i].poster.username %>/picture2/<%= posts[i].picture.pic2.location %>"
+                         class="img-responsive"/>
+                </div>
+            </div>
+            <div class="col-lg-12"
+                 style="border-top: solid lightgrey 2px; margin-top: 10px; padding-top: 10px; padding-bottom: 10px;">
+                <div class="col-lg-6" style="padding: 0 0 0 0">
+                    <span id="<%= posts[i]._id %>vote1">Votes : <%= posts[i].picture.pic1.votes %></span>
+                </div>
+                <div class="col-lg-6" style="padding: 0 0 0 0">
+                    <span id="<%= posts[i]._id %>vote2">Votes : <%= posts[i].picture.pic2.votes %></span>
+                </div>
+
+            </div>
+            <div class="col-lg-12" style="border-top: solid lightgrey 2px; margin-top: 1px; padding-top: 10px;">
+                <div class="col-lg-6" style="padding: 0 0 0 0">
+                    <a href="" id="<%= posts[i]._id %>like1" class="like1" rel="<%= posts[i]._id %>"><%= like11 %></a>
+                </div>
+                <div class="col-lg-6" style="padding: 0 0 0 0">
+                    <a href="" id="<%= posts[i]._id %>like2" class="like2" rel="<%= posts[i]._id %>"><%= like22 %></a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <input type="hidden" id="<%= posts[i]._id %>posterId" value="<%= posts[i].poster._id %>"/>
+        <input type="hidden" id="<%= posts[i]._id %>postId" value="<%= posts[i]._id %>"/>
+        <input type="hidden" id="<%= posts[i]._id %>userId" value="<%= user._id %>"/>
+        <% } %>
+    </div>
+
+    <div class="col-lg-2">
+
+    </div>
+</div>
