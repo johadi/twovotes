@@ -10,3 +10,4 @@ uploads/*
 !uploads/.gitkeep
 resized_pictures/*
 !resized_pictures/.gitkeep
+.env

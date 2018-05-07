@@ -8,12 +8,13 @@ function likeProcess(
   vote1Selector,
   vote2Selector) {
   const data = {posterId, postId, userId, likeType};
-  const serverUrl = 'http://localhost:4000';
+  const serverUrlProduction = 'https://twovotes.herokuapp.com';
+  const serverUrlLocal = 'http://localhost';
 
   $.ajax({
     type: "POST",
     dataType: "json",
-    url: `${serverUrl}/user/like`,
+    url: `${serverUrlProduction}/user/like`,
     data: JSON.stringify(data),//converts the string to json data and sends to server
     //use req.body to get your data on server side.if you don't use this, you will have to get your data using req.params
     contentType: "application/json",
