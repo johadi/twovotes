@@ -37,11 +37,11 @@
             <div class="col-lg-12">
                 <h4 align="center"><%= posts[i].title %></h4>
                 <div class="col-lg-6" style="padding: 0 0 0 0">
-                    <img src="/<%= posts[i].poster.username %>/picture1/<%= posts[i].picture.pic1.location %>"
+                    <img src="<%= posts[i].picture.pic1.location %>"
                          class="img-responsive"/>
                 </div>
                 <div class="col-lg-6" style="padding: 0 0 0 0">
-                    <img src="/<%= posts[i].poster.username %>/picture2/<%= posts[i].picture.pic2.location %>"
+                    <img src="<%= posts[i].picture.pic2.location %>"
                          class="img-responsive"/>
                 </div>
             </div>
@@ -62,7 +62,6 @@
                 <div class="col-lg-6" style="padding: 0 0 0 0">
                     <a href="" id="<%= posts[i]._id %>like2" class="like2" rel="<%= posts[i]._id %>"><%= like22 %></a>
                 </div>
-
             </div>
 
         </div>

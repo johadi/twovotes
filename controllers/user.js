@@ -1,3 +1,4 @@
+require('dotenv').load();
 const Post = require("../models/post");
 const User = require("../models/user");
 const Count = require("../models/postCount");
@@ -8,6 +9,7 @@ const fs = require("fs");
 
 const multer = require("multer");//saves pictures
 const jimp = require("jimp");//for resizing pictures
+const isProduction = process.env.NODE_ENV === 'production';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -131,109 +133,90 @@ module.exports = {
         });
       },
       function (count) {
-        if (req.session && req.session.path1 && req.session.path2) {
-          const path2 = req.session.path2;
-          const path1 = req.session.path1;
-          res.render("user/post_page", {
-            count,
-            path1,
-            path2,
-            msg: req.user.username,
-            message: req.flash("message"),
-            success_msg: req.flash("success_msg")
-          });
-        } else if (req.session && req.session.path1) {
-          const path2 = "/uploads/default.jpg";
-          const path1 = req.session.path1;
-          res.render("user/post_page", {
-            msg: req.user.username,
-            count,
-            path1,
-            path2,
-            message: req.flash("message"),
-            success_msg: req.flash("success_msg")
-          });
+        let path2 = "/uploads/default.jpg";
+        const path1 = "/uploads/default.jpg";
+        if (req.session && req.session.path2) {
+          path2 = req.session.path2;
         }
-        else {
-          const path2 = "/uploads/default.jpg";
-          const path1 = "/uploads/default.jpg";
-          res.render("user/post_page", {
-            msg: req.user.username,
-            count,
-            path1,
-            path2,
-            message: req.flash("message"),
-            success_msg: req.flash("success_msg")
-          });
 
-        }
+        res.render("user/post_page", {
+          msg: req.user.username,
+          count,
+          path1,
+          path2,
+          message: req.flash("message"),
+          success_msg: req.flash("success_msg")
+        });
 
       }
     ]);
   },
 
   userPost1Post: function (req, res) { //handles first picture post
-    upload(req, res, function (err) {
-      if (err) throw err;
-      if (!req.file) {
-        req.flash("message", "Choose valid image");
-        return res.redirect("/user/post");
-      }
-      const ext = req.file.originalname.split(".").pop();
-      const filename = req.body.postId + "." + ext.toLowerCase();
+    if(isProduction) {
+      appendix.uploadToCloudinary(req, res, 'picture1');
+    } else {
+      upload(req, res, function (err) {
+        if (err) throw err;
+        if (!req.file) {
+          req.flash("message", "Choose valid image");
+          return res.redirect("/user/post");
+        }
+        const ext = req.file.originalname.split(".").pop();
+        const filename = req.body.postId + "." + ext.toLowerCase();
 
-      const oldPath = "uploads/" + req.user.username + "/picture1/" + filename;
-      const newPath = "resized_pictures/" + req.user.username + "/picture1/" + filename;
-      //resize the picture,save it and redirect page to "post-2"
-      appendix.uploadPhoto(res, jimp, oldPath, newPath, "/user/post-2");
+        const oldPath = "uploads/" + req.user.username + "/picture1/" + filename;
+        const newPath = "resized_pictures/" + req.user.username + "/picture1/" + filename;
+        //resize the picture,save it and redirect page to "post-2"
 
-    });
+        let goto = "/user/post-2";
+        if (req.session.path2) {
+          goto = '/user/post-all';
+        }
+
+        appendix.uploadPhoto(res, jimp, oldPath, newPath, goto);
+      });
+    }
   },
 
   userPost2Get: function (req, res) {
     const count = req.session.postId;
-    if (req.session && req.session.path1 && req.session.path2) {
-      const path1 = req.session.path1;
-      const path2 = req.session.path2;
-      res.render("user/post_page2", {
-        msg: req.user.username,
-        path1,
-        path2,
-        count,
-        success_msg: req.flash("success_msg"),
-        message: req.flash("message")
-      });
-    } else {
-      const path1 = req.session.path1;
-      const path2 = "/uploads/default.jpg";
-      res.render("user/post_page2", {
-        msg: req.user.username,
-        path1,
-        path2,
-        count,
-        message: req.flash("message"),
-        success_msg: req.flash("success_msg")
-      });
+    if (req.session && req.session.path2) {
+      req.session.path2 = null;
     }
+    const path1 = req.session.path1;
+    const path2 = "/uploads/default.jpg";
+    res.render("user/post_page2", {
+      msg: req.user.username,
+      path1,
+      path2,
+      count,
+      message: req.flash("message"),
+      success_msg: req.flash("success_msg")
+    });
 
   },
 
   userPost2Post: function (req, res) { //handles second pic post
-    upload2(req, res, function (err) {
-      if (err) throw err;
-      if (!req.file) {
-        req.flash("message", "Choose valid image");
-        return res.redirect("/user/post-2");
-      }
-      const ext = req.file.originalname.split(".").pop();
-      const filename = req.body.postId + "." + ext.toLowerCase();
+    if(isProduction) {
+      appendix.uploadToCloudinary(req, res, 'picture2');
+    } else {
+      upload2(req, res, function (err) {
+        if (err) throw err;
+        if (!req.file) {
+          req.flash("message", "Choose valid image");
+          return res.redirect("/user/post-2");
+        }
+        const ext = req.file.originalname.split(".").pop();
+        const filename = req.body.postId + "." + ext.toLowerCase();
 
-      const oldPath = "uploads/" + req.user.username + "/picture2/" + filename;
-      const newPath = "resized_pictures/" + req.user.username + "/picture2/" + filename;
-      //resize the picture,save it and redirect page to "post-all"
-      appendix.uploadPhoto(res, jimp, oldPath, newPath, "/user/post-all");
+        const oldPath = "uploads/" + req.user.username + "/picture2/" + filename;
+        const newPath = "resized_pictures/" + req.user.username + "/picture2/" + filename;
+        //resize the picture,save it and redirect page to "post-all"
+        appendix.uploadPhoto(res, jimp, oldPath, newPath, "/user/post-all");
 
-    });
+      });
+    }
   },
 
   userPostAllGet: function (req, res) {
@@ -244,8 +227,8 @@ module.exports = {
         ext1: req.session.ext1,
         ext2: req.session.ext2,
         postId: req.session.postId,
-        path1: req.session.path1,
-        path2: req.session.path2
+        pic_path1: req.session.path1,
+        pic_path2: req.session.path2
       });
     }
     else {
@@ -256,10 +239,9 @@ module.exports = {
   userPostAllPost: function (req, res) {
     if (
       req.body.posterId &&
-      req.body.username &&
       req.body.postId &&
-      req.body.ext1 &&
-      req.body.ext2 &&
+      req.body.pic_path1 &&
+      req.body.pic_path2 &&
       req.body.title
     ) {
 
@@ -282,17 +264,15 @@ module.exports = {
 
 
             res.redirect("/user/home");
-          }
-          else {//if user has not posted,create new post
+          } else {//if user has not posted,create new post
 
             const title = req.body.title;
             const posterId = req.body.posterId;
-            const username = req.body.username;
             const postId = req.body.postId;
-            const ext1 = req.body.ext1;
-            const ext2 = req.body.ext2;
             // save post info to Db,update post count in PostCount and redirect
-            appendix.savePostToDB(req, res, title, posterId, username, postId, ext1, ext2, "/user/home");
+            appendix.savePostToDB(
+              req, res, title, posterId, postId, req.body.pic_path1, req.body.pic_path2, "/user/home"
+            );
           }
         }
       ]);

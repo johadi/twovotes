@@ -18,10 +18,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <img src="<%=path1%>" class="img-responsive">
+                                <img src="<%=pic_path1%>" class="img-responsive">
                             </td>
                             <td>
-                                <img src="<%=path2%>" class="img-responsive">
+                                <img src="<%=pic_path2%>" class="img-responsive">
 
                             </td>
                         </tr>
@@ -35,10 +35,9 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="hidden" name="ext1" value="<%=ext1%>" />
-                                <input type="hidden" name="ext2" value="<%=ext2%>" />
+                                <input type="hidden" name="pic_path1" value="<%=pic_path1%>" />
+                                <input type="hidden" name="pic_path2" value="<%=pic_path2%>" />
                                 <input type="hidden" name="postId" value="<%=postId%>" />
-                                <input type="hidden" name="username" value="<%=user.username%>" />
                                 <input type="hidden" name="posterId" value="<%=user._id%>" />
                                 <button type="submit" class="btn btn-success btn-lg btn-block" name="post">
                                     Post

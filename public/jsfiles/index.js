@@ -9,7 +9,7 @@ function likeProcess(
   vote2Selector) {
   const data = {posterId, postId, userId, likeType};
   const serverUrlProduction = 'https://twovotes.herokuapp.com';
-  const serverUrlLocal = 'http://localhost';
+  const serverUrlLocal = 'http://localhost:4000';
 
   $.ajax({
     type: "POST",
