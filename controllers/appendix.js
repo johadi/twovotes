@@ -128,6 +128,29 @@ module.exports = {
       }
     });
   },
+  uploadProfilePictureToCloudinary: function(req, res, oldPath) {
+    const cloudFileName= req.user.username; //remember it has no file extension
+    const cloudPath=`twovotes/profile_pictures/${cloudFileName}`;
+    cloudinary.uploader.upload(oldPath,(result)=> {
+        fs.unlink(oldPath,(err)=> {
+          if(err) return res.status(500).json(err);
+
+          User.findById(req.user._id)
+            .then(user => {
+              user.user_avatar = result.secure_url;
+              user.save(function (savedErr) {
+                if(savedErr) return res.json('Error occurred');
+                return res.redirect("/user/update-profile");
+              });
+            });
+        });
+      },
+      {
+        public_id: cloudPath,//images/files are saved according to this path
+        width: 200,
+        height: 200
+      });
+  },
   checkPostIdExist: function (postId, cb) {
     Post.findOne({postId: postId}, function (err, rs) {
       if (err) throw err;

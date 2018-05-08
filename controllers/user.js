@@ -332,6 +332,11 @@ module.exports = {
 
       const oldPath = "public/profile_pictures/" + filename;
       const newPath = "public/profile_pictures/" + filename;
+
+      if(isProduction) {
+        return appendix.uploadProfilePictureToCloudinary(req, res, oldPath);
+      }
+
       jimp.read(oldPath, function (err, image) {
         if (err) throw err;
         image.resize(200, 200)
