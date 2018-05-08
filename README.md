@@ -1,5 +1,5 @@
-## SocialVoting
- SocialVoting is like a voting application where users can rate two pictures by reacting on the one they preferred.
+## twovotes
+ **twovotes** is like a voting application where users can rate two pictures by reacting on the one they preferred.
  See the live app at [https://twovotes.herokuapp.com](https://twovotes.herokuapp.com)
 ### What a User can do with the app
 - User can sign up and Sign in to the application
@@ -19,7 +19,7 @@
 
 ### Installation
 - Clone this repository
-- Change into this project directory `cd SocialVoting`
+- Change into this project directory `cd twovotes`
 - Add the project environmental variables by creating .env file using the pattern in the env.sample file in this project
 - Install the packages `npm install`
 - Start the application `npm start`
