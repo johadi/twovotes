@@ -30,9 +30,9 @@ const storage2 = multer.diskStorage({
   }
 });
 
-const storageImg = multer.diskStorage({
+const storageProfileImage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads/' + req.user.username);
+    cb(null, './public/profile_pictures');
   },
   filename: function (req, file, cb) {
     const ext = file.originalname.split(".").pop();
@@ -82,13 +82,13 @@ const upload2 = multer({
   }
 
 }).single("picture2");
-const uploadImg = multer({
-  storage: storageImg,
+
+const uploadProfileImage = multer({
+  storage: storageProfileImage,
   fileFilter: function (req, file, cb) {
     const ext = file.originalname.split(".").pop();
 
     if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'jpeg' || ext.toLowerCase() == 'png') {
-      req.flash("error", 1);
       req.session.postId = req.body.postId;
       req.session.imgExt = ext.toLowerCase();
       //req.session.path1="/"+req.user.username+"/picture1/"+req.body.postId+"."+ext.toLowerCase();
@@ -97,7 +97,6 @@ const uploadImg = multer({
     else {
       console.log(ext + " file not allowed");
       //req.fileValidationError="this file is not allowed";
-      req.flash("error", 2);
       return cb(null, false, new Error('I don\'t have a clue!'));
     }
 
@@ -294,7 +293,8 @@ module.exports = {
         {
           success_msg: req.flash("success_msg"),
           message: req.flash("message"),
-          imgMsg: req.flash("imgMsg"),
+          imageErrorMessage: req.flash("imageErrorMessage"),
+          imageSuccessMessage: req.flash("imageSuccessMessage"),
         });
     }
 
@@ -319,32 +319,34 @@ module.exports = {
       .catch(err => res.json({err}));
   },
   userUpload: function (req, res) {
-    uploadImg(req, res, function (err) {
+    uploadProfileImage(req, res, function (err) {
+      console.log('REqqq', req.file);
       if (err) throw err;
       if (!req.file) {
-        req.flash("success", 0);
-        return req.send("Choose valid image");
+        req.flash("imageErrorMessage", "Choose valid image");
+        return res.redirect("/user/update-profile");
       }
-      if (req.flash("error") == 1) {
-        const ext = req.file.originalname.split(".").pop();
-        const filename = req.user.username + "." + ext.toLowerCase();
 
-        const oldPath = "uploads/" + req.user.username + "/" + filename;
-        const newPath = "resized_pictures/" + req.user.username + "/" + filename;
-        jimp.read(oldPath, function (err, image) {
-          if (err) throw err;
-          image.resize(200, 200)
-            .quality(100)
-            .write(newPath);
-          req.flash("success", 1);
-          req.flash("ext", ext);
-          res.send("<img src='/" + req.user.username + "/" + req.user.username + "." + ext + "' />");
+      const ext = req.file.originalname.split(".").pop();
+      const filename = req.user.username + "." + ext.toLowerCase();
 
-        });
-        return;
-      }
-      req.flash("success", 0);
-      res.send("<p style='color:red'>Select Valid image</p> <img src='/pix.jpg'>");
+      const oldPath = "public/profile_pictures/" + filename;
+      const newPath = "public/profile_pictures/" + filename;
+      jimp.read(oldPath, function (err, image) {
+        if (err) throw err;
+        image.resize(200, 200)
+          .quality(100)
+          .write(newPath);
+        User.findById(req.user._id)
+          .then(user => {
+            const avatarPath = "/profile_pictures/" + filename;
+            user.user_avatar = avatarPath;
+            user.save(function (savedErr) {
+              if(savedErr) return res.json('Error occurred');
+              return res.redirect("/user/update-profile");
+            });
+          });
+      });
 
     });
   },

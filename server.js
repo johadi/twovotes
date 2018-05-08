@@ -57,6 +57,7 @@ app.use(function (req, res, next) {
   res.locals.user = req.user;
   next();
 });
+
 app.use(express.static(__dirname + "/resized_pictures"));
 app.use(express.static(__dirname + "/public"));
 app.use(logger("dev"));
