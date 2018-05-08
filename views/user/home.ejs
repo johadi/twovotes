@@ -4,7 +4,7 @@
     <% include side_menu.ejs %>
     <div class="col-lg-6 col-lg-offset-1">
         <% for(var i = 0;i < posts.length;i++){ %>
-        <div class="row" id="pos">
+        <div class="row post" id="pos">
             <%
                 var date = new Date(posts[i].date);
                 var like11 = "Like";
