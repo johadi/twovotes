@@ -28,7 +28,7 @@ navigate to `localhost:<YOUR_PORT>`
 
 ### Deployment
 This guide is for heroku. For other platforms, package.json is all yours to tweak.
-- push you code to Heroku either using heroku CLI or Dashboard.
+- push you code to Heroku either using Heroku CLI or Dashboard.
 - Set your environmental variables on Heroku which also has `MONGODB_URI` for connecting
 to your database.
 - Your app should be live. 
@@ -36,9 +36,8 @@ to your database.
 
 ### Upgrade
 I started this project back then in 2016 using only server side technologies.
-The code were a little bit rough as I majorly depended on using ES5 then. Though, I have refactored
-the project to match some standard in ES6 but I think is time I rewrite everything with the present
-day technologies. Hence, watch out for the version of this project in ReacJS and RESTful API based
+The code was a little bit messy as I majorly wrote it in ES5 during my NodeJS beginner days. Though I have refactored
+the project to match some standard in ES6, I think is time I rewrite everything with the present day technologies. Hence, watch out for the version of this project in ReacJS and RESTful API based
 on NodeJS.
 
 ### Contribution
